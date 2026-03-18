@@ -280,7 +280,7 @@ config.keys = {
   { key = "l", mods = "LEADER|ALT", action = act.SplitPane { direction = "Right" } },
   {
     key = '+',
-    mods = 'LEADER|SHIFT',
+    mods = 'CTRL|ALT|SHIFT',
     action = wezterm.action_callback(function(window, pane)
       local overrides = window:get_config_overrides() or {}
       -- 現在の値を取得（未設定なら1.0と仮定）
@@ -292,8 +292,8 @@ config.keys = {
     end),
   },
   {
-    key = '-',
-    mods = 'LEADER',
+    key = '_',
+    mods = 'CTRL|ALT|SHIFT',
     action = wezterm.action_callback(function(window, pane)
       local overrides = window:get_config_overrides() or {}
       local current = overrides.window_background_opacity or 1.0
@@ -304,8 +304,8 @@ config.keys = {
     end),
   },
   {
-    key = '0',
-    mods = 'LEADER',
+    key = ')',
+    mods = 'CTRL|ALT|SHIFT',
     action = wezterm.action_callback(function(window, pane)
       local overrides = window:get_config_overrides() or {}
       overrides.window_background_opacity = default_window_background_opacity
