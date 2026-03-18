@@ -29,7 +29,8 @@ config.color_scheme = 'Tango (base16)'
 config.use_ime = true
 config.xcursor_theme = "Yaru"
 config.treat_east_asian_ambiguous_width_as_wide = true
-config.window_background_opacity = 0.92
+local default_window_background_opacity = 0.90
+config.window_background_opacity = default_window_background_opacity
 config.default_cursor_style = 'BlinkingBlock'
 -- config.cursor_blink_ease_in = 'Constant'
 -- config.cursor_blink_ease_out = 'Constant'
@@ -277,6 +278,40 @@ config.keys = {
   { key = "k", mods = "LEADER|ALT", action = act.SplitPane { direction = "Up" } },
   { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
   { key = "l", mods = "LEADER|ALT", action = act.SplitPane { direction = "Right" } },
+  {
+    key = '+',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action_callback(function(window, pane)
+      local overrides = window:get_config_overrides() or {}
+      -- 現在の値を取得（未設定なら1.0と仮定）
+      local current = overrides.window_background_opacity or 1.0
+      if current < 1.0 then
+        overrides.window_background_opacity = current + 0.05
+      end
+      window:set_config_overrides(overrides)
+    end),
+  },
+  {
+    key = '-',
+    mods = 'LEADER',
+    action = wezterm.action_callback(function(window, pane)
+      local overrides = window:get_config_overrides() or {}
+      local current = overrides.window_background_opacity or 1.0
+      if current > 0.0 then
+        overrides.window_background_opacity = math.max(0, current - 0.05)
+      end
+      window:set_config_overrides(overrides)
+    end),
+  },
+  {
+    key = '0',
+    mods = 'LEADER',
+    action = wezterm.action_callback(function(window, pane)
+      local overrides = window:get_config_overrides() or {}
+      overrides.window_background_opacity = default_window_background_opacity
+      window:set_config_overrides(overrides)
+    end),
+  },
 }
 
 -- Finally, return the configuration to wezterm:
