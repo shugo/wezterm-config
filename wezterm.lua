@@ -1,5 +1,6 @@
 -- Pull in the wezterm API
 local wezterm = require 'wezterm'
+local act = wezterm.action
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
@@ -93,7 +94,7 @@ config.colors = {
 
 -- CopyMode/SearchMode を終了する際に検索パターンもクリアするアクション
 local function close_copy_mode()
-  return wezterm.action.Multiple {
+  return act.Multiple {
     { CopyMode = 'ClearPattern' },
     { CopyMode = 'Close' },
   }
@@ -104,42 +105,42 @@ local copy_mode_emacs_keys = {
   -- === カーソル移動 ===
 
   -- 文字単位
-  { key = 'f', mods = 'CTRL',  action = wezterm.action.CopyMode 'MoveRight' },
-  { key = 'b', mods = 'CTRL',  action = wezterm.action.CopyMode 'MoveLeft' },
-  { key = 'n', mods = 'CTRL',  action = wezterm.action.CopyMode 'MoveDown' },
-  { key = 'p', mods = 'CTRL',  action = wezterm.action.CopyMode 'MoveUp' },
+  { key = 'f', mods = 'CTRL',  action = act.CopyMode 'MoveRight' },
+  { key = 'b', mods = 'CTRL',  action = act.CopyMode 'MoveLeft' },
+  { key = 'n', mods = 'CTRL',  action = act.CopyMode 'MoveDown' },
+  { key = 'p', mods = 'CTRL',  action = act.CopyMode 'MoveUp' },
 
   -- 行頭・行末
-  { key = 'a', mods = 'CTRL',  action = wezterm.action.CopyMode 'MoveToStartOfLineContent' },
-  { key = 'e', mods = 'CTRL',  action = wezterm.action.CopyMode 'MoveToEndOfLineContent' },
+  { key = 'a', mods = 'CTRL',  action = act.CopyMode 'MoveToStartOfLineContent' },
+  { key = 'e', mods = 'CTRL',  action = act.CopyMode 'MoveToEndOfLineContent' },
 
   -- 単語単位 (Meta/Alt)
-  { key = 'f', mods = 'META',  action = wezterm.action.CopyMode 'MoveForwardWord' },
-  { key = 'b', mods = 'META',  action = wezterm.action.CopyMode 'MoveBackwardWord' },
+  { key = 'f', mods = 'META',  action = act.CopyMode 'MoveForwardWord' },
+  { key = 'b', mods = 'META',  action = act.CopyMode 'MoveBackwardWord' },
 
   -- ページ移動
-  { key = 'v', mods = 'CTRL',  action = wezterm.action.CopyMode 'PageDown' },
-  { key = 'v', mods = 'META',  action = wezterm.action.CopyMode 'PageUp' },
+  { key = 'v', mods = 'CTRL',  action = act.CopyMode 'PageDown' },
+  { key = 'v', mods = 'META',  action = act.CopyMode 'PageUp' },
 
   -- バッファの先頭・末尾
-  { key = '<', mods = 'META',  action = wezterm.action.CopyMode 'MoveToScrollbackTop' },
-  { key = '>', mods = 'META',  action = wezterm.action.CopyMode 'MoveToScrollbackBottom' },
+  { key = '<', mods = 'META',  action = act.CopyMode 'MoveToScrollbackTop' },
+  { key = '>', mods = 'META',  action = act.CopyMode 'MoveToScrollbackBottom' },
 
   -- 画面の先頭・中央・末尾 (Emacs: M-r に相当)
-  { key = 'R', mods = 'META',  action = wezterm.action.CopyMode 'MoveToViewportTop' },
-  { key = 'r', mods = 'META',  action = wezterm.action.CopyMode 'MoveToViewportMiddle' },
+  { key = 'R', mods = 'META',  action = act.CopyMode 'MoveToViewportTop' },
+  { key = 'r', mods = 'META',  action = act.CopyMode 'MoveToViewportMiddle' },
 
   -- === 選択 (マーク) ===
 
   -- C-Space または C-@ でマーク開始
-  { key = 'Space', mods = 'CTRL', action = wezterm.action.CopyMode { SetSelectionMode = 'Cell' } },
+  { key = 'Space', mods = 'CTRL', action = act.CopyMode { SetSelectionMode = 'Cell' } },
   { key = 'g',     mods = 'CTRL', action = close_copy_mode() }, -- C-g でキャンセル/終了
 
   -- 行選択モード (C-x h に近い感覚で行単位選択)
-  { key = 'x', mods = 'CTRL', action = wezterm.action.CopyMode { SetSelectionMode = 'Line' } },
+  { key = 'x', mods = 'CTRL', action = act.CopyMode { SetSelectionMode = 'Line' } },
 
   -- 矩形選択 (C-x r)
-  { key = 'r', mods = 'CTRL', action = wezterm.action.CopyMode { SetSelectionMode = 'Block' } },
+  { key = 'r', mods = 'CTRL', action = act.CopyMode { SetSelectionMode = 'Block' } },
 
   -- === コピー・終了 ===
 
@@ -147,7 +148,7 @@ local copy_mode_emacs_keys = {
   {
     key = 'w',
     mods = 'META',
-    action = wezterm.action.Multiple {
+    action = act.Multiple {
       { CopyMode = 'MoveLeft' },
       { CopyTo = 'ClipboardAndPrimarySelection' },
       { CopyMode = 'ClearPattern' },
@@ -159,7 +160,7 @@ local copy_mode_emacs_keys = {
   {
     key = 'Return',
     mods = 'NONE',
-    action = wezterm.action.Multiple {
+    action = act.Multiple {
       { CopyTo = 'ClipboardAndPrimarySelection' },
       { CopyMode = 'ClearPattern' },
       { CopyMode = 'Close' },
@@ -181,14 +182,14 @@ local copy_mode_emacs_keys = {
   {
     key = 's',
     mods = 'CTRL',
-    action = wezterm.action.Search { CaseSensitiveString = '' },
+    action = act.Search { CaseSensitiveString = '' },
   },
 
   -- C-r で後方検索
   {
     key = 'r',
     mods = 'CTRL',
-    action = wezterm.action.Search { CaseSensitiveString = '' },
+    action = act.Search { CaseSensitiveString = '' },
   },
 }
 
@@ -198,41 +199,41 @@ local search_mode_emacs_keys = {
   -- === 検索ナビゲーション ===
 
   -- C-s: 次のマッチへ (Emacs isearch-repeat-forward)
-  { key = 's', mods = 'CTRL', action = wezterm.action.CopyMode 'NextMatch' },
+  { key = 's', mods = 'CTRL', action = act.CopyMode 'NextMatch' },
 
   -- C-r: 前のマッチへ (Emacs isearch-repeat-backward)
-  { key = 'r', mods = 'CTRL', action = wezterm.action.CopyMode 'PriorMatch' },
+  { key = 'r', mods = 'CTRL', action = act.CopyMode 'PriorMatch' },
 
   -- Enter: 前のマッチへ (デフォルト踏襲)
-  { key = 'Return', mods = 'NONE', action = wezterm.action.CopyMode 'PriorMatch' },
+  { key = 'Return', mods = 'NONE', action = act.CopyMode 'PriorMatch' },
 
   -- ページ単位ジャンプ
-  { key = 'v', mods = 'CTRL', action = wezterm.action.CopyMode 'NextMatchPage' },
-  { key = 'v', mods = 'META', action = wezterm.action.CopyMode 'PriorMatchPage' },
+  { key = 'v', mods = 'CTRL', action = act.CopyMode 'NextMatchPage' },
+  { key = 'v', mods = 'META', action = act.CopyMode 'PriorMatchPage' },
 
   -- === 入力編集 ===
 
   -- C-u: パターンをクリア (Emacs kill-whole-line 風)
-  { key = 'u', mods = 'CTRL', action = wezterm.action.CopyMode 'ClearPattern' },
+  { key = 'u', mods = 'CTRL', action = act.CopyMode 'ClearPattern' },
 
   -- C-w: 単語削除 (Emacs backward-kill-word 風)
   -- WezTermのsearch_modeでは SendKey で代替
-  { key = 'w', mods = 'CTRL', action = wezterm.action.SendKey { key = 'w', mods = 'CTRL' } },
+  { key = 'w', mods = 'CTRL', action = act.SendKey { key = 'w', mods = 'CTRL' } },
 
   -- C-h / Backspace: 1文字削除
-  { key = 'h',         mods = 'CTRL', action = wezterm.action.SendKey { key = 'Backspace' } },
-  { key = 'Backspace', mods = 'NONE', action = wezterm.action.SendKey { key = 'Backspace' } },
+  { key = 'h',         mods = 'CTRL', action = act.SendKey { key = 'Backspace' } },
+  { key = 'Backspace', mods = 'NONE', action = act.SendKey { key = 'Backspace' } },
 
   -- === 検索タイプの切り替え ===
 
   -- C-t: マッチタイプをサイクル (CaseSensitive / CaseInSensitive / Regex)
-  { key = 't', mods = 'CTRL', action = wezterm.action.CopyMode 'CycleMatchType' },
+  { key = 't', mods = 'CTRL', action = act.CopyMode 'CycleMatchType' },
 
   -- === モード遷移 ===
 
   -- Enter でCopyModeに戻り、選択・コピー操作へ移行
   -- (C-s で検索しながら Enter で結果確認 → CopyModeでマーク & M-w でコピー)
-  { key = 'Return', mods = 'NONE', action = wezterm.action.ActivateCopyMode },
+  { key = 'Return', mods = 'NONE', action = act.ActivateCopyMode },
 
   -- C-g / Escape: SearchModeを閉じる（パターンもクリア）
   { key = 'g',      mods = 'CTRL', action = close_copy_mode() },
@@ -253,21 +254,29 @@ config.key_tables = {
 -- config.key_tables = require("keybinds").key_tables
 config.leader = { key = "]", mods = "ALT", timeout_milliseconds = 2000 }
 config.keys = {
-  { key = "c", mods = "LEADER", action = wezterm.action({ SpawnTab = "CurrentPaneDomain" }) },
-  { key = "n", mods = "LEADER", action = wezterm.action.ActivateTabRelative(1) },
-  { key = "p", mods = "LEADER", action = wezterm.action.ActivateTabRelative(-1) },
-  { key = "1", mods = "LEADER", action = wezterm.action.ActivateTab(0) },
-  { key = "2", mods = "LEADER", action = wezterm.action.ActivateTab(1) },
-  { key = "3", mods = "LEADER", action = wezterm.action.ActivateTab(2) },
-  { key = "4", mods = "LEADER", action = wezterm.action.ActivateTab(3) },
-  { key = "5", mods = "LEADER", action = wezterm.action.ActivateTab(4) },
-  { key = "6", mods = "LEADER", action = wezterm.action.ActivateTab(5) },
-  { key = "7", mods = "LEADER", action = wezterm.action.ActivateTab(6) },
-  { key = "8", mods = "LEADER", action = wezterm.action.ActivateTab(7) },
-  { key = "9", mods = "LEADER", action = wezterm.action.ActivateTab(8) },
-  { key = "]", mods = "LEADER|ALT", action = wezterm.action.ActivateLastTab },
-  { key = "[", mods = "LEADER", action = wezterm.action.ActivateCopyMode },
-  { key = "]", mods = "LEADER", action = wezterm.action.PasteFrom("Clipboard") },
+  { key = "c", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
+  { key = "n", mods = "LEADER", action = act.ActivateTabRelative(1) },
+  { key = "p", mods = "LEADER", action = act.ActivateTabRelative(-1) },
+  { key = "1", mods = "LEADER", action = act.ActivateTab(0) },
+  { key = "2", mods = "LEADER", action = act.ActivateTab(1) },
+  { key = "3", mods = "LEADER", action = act.ActivateTab(2) },
+  { key = "4", mods = "LEADER", action = act.ActivateTab(3) },
+  { key = "5", mods = "LEADER", action = act.ActivateTab(4) },
+  { key = "6", mods = "LEADER", action = act.ActivateTab(5) },
+  { key = "7", mods = "LEADER", action = act.ActivateTab(6) },
+  { key = "8", mods = "LEADER", action = act.ActivateTab(7) },
+  { key = "9", mods = "LEADER", action = act.ActivateTab(8) },
+  { key = "]", mods = "LEADER|ALT", action = act.ActivateLastTab },
+  { key = "[", mods = "LEADER", action = act.ActivateCopyMode },
+  { key = "]", mods = "LEADER", action = act.PasteFrom("Clipboard") },
+  { key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
+  { key = "h", mods = "LEADER|ALT", action = act.SplitPane { direction = "Left" } },
+  { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
+  { key = "j", mods = "LEADER|ALT", action = act.SplitPane { direction = "Down" } },
+  { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
+  { key = "k", mods = "LEADER|ALT", action = act.SplitPane { direction = "Up" } },
+  { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
+  { key = "l", mods = "LEADER|ALT", action = act.SplitPane { direction = "Right" } },
 }
 
 -- Finally, return the configuration to wezterm:
