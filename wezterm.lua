@@ -15,21 +15,22 @@ config.initial_rows = 36
 config.font = wezterm.font_with_fallback {
   {
     family = 'Fira Code',
-    harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
+    -- harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
   },
   {
     family = 'Noto Sans CJK JP',
   },
 }
 config.font_size = 12
-config.color_scheme = 'Tango (base16)'
--- config.color_scheme = 'Tango (terminal.sexy)'
+-- config.color_scheme = 'Tango (base16)'
+config.color_scheme = 'Tango (terminal.sexy)'
+-- config.color_scheme = 'GitHub Dark (Gosh)'
 
 -- config.enable_wayland = false
 config.use_ime = true
 config.xcursor_theme = "Yaru"
 config.treat_east_asian_ambiguous_width_as_wide = true
-local default_window_background_opacity = 0.90
+local default_window_background_opacity = 0.85
 config.window_background_opacity = default_window_background_opacity
 config.default_cursor_style = 'BlinkingBlock'
 -- config.cursor_blink_ease_in = 'Constant'
@@ -72,15 +73,15 @@ end)
 config.colors = {
   visual_bell = '#ff4444',
   tab_bar = {
-    background = '#0077cc',
+    background = '#444444',
     inactive_tab = {
-      bg_color = '#0077cc',
+      bg_color = '#444444',
       fg_color = '#ffffff',
       intensity = 'Normal',
     },
     active_tab = {
-      bg_color = '#82bd47',
-      fg_color = '#ffffff',
+      bg_color = '#cccccc',
+      fg_color = '#444444',
       intensity = 'Bold',
     },
   },
