@@ -18,6 +18,10 @@ config.font = wezterm.font_with_fallback {
     -- harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
   },
   {
+    family = 'Cascadia Code', -- for hankaku symbols
+    weight = 'Regular',
+  },
+  {
     family = 'Noto Sans CJK JP',
   },
 }
@@ -29,7 +33,7 @@ config.color_scheme = 'Tango (terminal.sexy)'
 -- config.enable_wayland = false
 config.use_ime = true
 config.xcursor_theme = "Yaru"
-config.treat_east_asian_ambiguous_width_as_wide = true
+config.treat_east_asian_ambiguous_width_as_wide = false
 local default_window_background_opacity = 0.85
 config.window_background_opacity = default_window_background_opacity
 config.default_cursor_style = 'BlinkingBlock'
@@ -71,16 +75,19 @@ wezterm.on('update-right-status', function(window, pane)
 end)
 
 config.colors = {
+  cursor_bg = '#c5c8c6',
+  cursor_fg = '#1d1f21',
+  cursor_border = '#c5c8c6',
   visual_bell = '#ff4444',
   tab_bar = {
     background = '#444444',
     inactive_tab = {
       bg_color = '#444444',
-      fg_color = '#ffffff',
+      fg_color = '#c5c8c6',
       intensity = 'Normal',
     },
     active_tab = {
-      bg_color = '#cccccc',
+      bg_color = '#c5c8c6',
       fg_color = '#444444',
       intensity = 'Bold',
     },
